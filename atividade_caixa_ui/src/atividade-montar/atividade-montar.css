@@ -1,0 +1,158 @@
+/* .titulo-p-d-flex {
+    font-weight: bold;
+    font-size: 20px;
+    color: black
+
+} */
+
+/* .pergunta-p-col-8 {
+    font-weight: bold;
+    font-size: 15px;
+    font-style: inherit;
+    color: #696969;
+    margin-left: -18rem;
+    margin-top: 60px;
+} */
+
+ .atividade-montar-container {
+    /* width: 100vw; */
+    /* height: 100vh; */
+    /* background: linear-gradient(180deg, #DDDD 0%, rgb(134, 131, 134) 100%); */
+    /* overflow: hidden; */
+    /* padding: 0; */
+    /* margin: 0; */
+    /* display: flex; */
+    margin-left: 10px;
+    margin-top: 20px;
+    /* justify-content: center; */
+    /* align-items: center; */
+  } 
+
+/* .example-container-pergunta {
+    background: white;
+    border-radius: 10px;
+    width: 200px;
+    height: 250px;
+    margin-left: -245px;
+    margin-top: 50px;
+} */
+
+/* .example-container-resposta {
+    background: white;
+    border-radius: 30px;
+    width: 150px;
+    height: 150px;
+    margin-top: 100px;
+    margin-left: 10px;
+} */
+
+/* .p-mb-2-text {
+    font-weight: bold;
+    font-size: 20px;
+    font-style: inherit;
+    color: #696969;
+    width: 90px;
+    height: 70px;
+    padding-left: 10px;
+    margin-top: 100px;
+} */
+
+/* .skeleton {
+    display: flex; 
+    margin-left: 10px;
+    margin-top: 5px;
+} */
+
+/* .skeleton1 {
+    display: flex;
+    margin-left: 30px;
+} */
+
+/* .skeleton2 {
+    display: flex;
+    margin-left: 30px;
+} */
+
+/* .skeleton3 {
+    display: flex;
+    margin-left: 30px;
+} */
+
+/* .skeleton4 {
+    display: flex;
+    margin-left: 30px;
+} */
+
+.pergunta-titulo {
+    font-size: 25px;
+    min-height: 10em;
+    display: table-cell;
+    vertical-align: middle
+    /* font-style: normal; */
+}
+
+/* Caixa Pergunra */
+
+.pergunta-txt {
+    text-align: center;
+    font-size: 20px;
+}
+
+.montion-pergunta {
+    background: white;
+    border-radius: 10px;
+    margin-left: 70px;
+    /* margin-left: auto; */
+    margin-right: auto;
+}
+
+/* Caixa Resposta A */
+
+.motion-resposta-A {
+    background: white;
+    border-radius: 10px;
+    margin-top: 50px;
+    margin-left: 20px;
+}
+
+.resposta-txt-A {
+    margin-top: 20px;
+    margin-left: center;
+    font-size: 20px;
+}
+
+/* Caixa Resposta B */
+
+.motion-resposta-B {
+    background: white;
+    border-radius: 10px;
+    /* width: 200px; */
+    /* height: 250px; */
+    margin-top: 50px;
+    margin-left: 60px;
+}
+
+.resposta-txt-B {
+    margin-top: 20px;
+    margin-left: center;
+    font-size: 20px;
+}
+
+
+/* Caixa Resposta C */
+
+
+.motion-resposta-C {
+    background: white;
+    border-radius: 10px;
+    /* width: 200px; */
+    /* height: 250px; */
+    margin-left: 100px;
+    font-size: 20px;
+}
+
+.resposta-txt-C {
+    margin-top: 20px;
+    margin-left: center;
+    font-size: 20px;
+}
