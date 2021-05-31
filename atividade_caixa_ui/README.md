@@ -1,4 +1,4 @@
-# react-with-webpack
+# react-with-webpack ...
 
 This repo contains sample code of how to setup a react app with Webpack and Babel.
 
