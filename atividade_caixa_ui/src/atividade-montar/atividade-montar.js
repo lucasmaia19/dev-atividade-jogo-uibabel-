@@ -15,6 +15,7 @@ import fanfare from './../sounds/fanfare.mp3';
 import { motion, useAnimation } from 'framer-motion';
 import MenuBar from '../menu-bar/menu-bar';
 import ListagemAnimatiom from '../listagem-animation/listagem-animation';
+import { If } from 'react-if';
 
 const AtividadeCaixaResposta = {
 
@@ -141,7 +142,7 @@ const AtividadeMontar = (props) => {
 
     return (
         <div>
-            <ListagemAnimatiom props={props}/>
+            {/* <ListagemAnimatiom props={props}/> */}
         </div>
 
         // <div>

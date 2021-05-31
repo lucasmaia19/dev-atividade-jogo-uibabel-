@@ -23,7 +23,7 @@ import com.example.atividade_caixa.repository.AtividadeCaixaRepository;
 import com.example.atividade_caixa.service.AtividadeCaixaService;
 
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("atividade_caixa")
 //@Slf4j

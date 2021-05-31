@@ -19,6 +19,8 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 
 import PesquisarImagemService from '../pesquisar-imagem/pesquisar-imagem-service';
 import MenuBar from '../menu-bar/menu-bar';
+import { If } from 'react-if';
+
 
   const AtividadeJogo = () => {
 
@@ -77,9 +79,9 @@ import MenuBar from '../menu-bar/menu-bar';
 			setRequestProgress(false)
 		})
 		.catch((error) => {
-			toast.current.show({severity:'error', summary: 'Listagem Falhou', life: 3000});
+			// toast.current.show({severity:'error', summary: 'Listagem Falhou', life: 3000});
 			setProgressSpinner(false)
-		
+
 		})
 	}
 
@@ -331,7 +333,7 @@ import MenuBar from '../menu-bar/menu-bar';
 	}
 
 	function listarAtividadesAnimation() {
-		history.push('/atividade-montar', atividadeAPI)
+		history.push('/teste-animation', atividadeAPI)
 	}
 
 	function selecionarImagem(rowData, evento) {

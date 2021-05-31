@@ -67,11 +67,10 @@ export default function Atividade({props, delayPerPixel = 0.0008, numItems = 52}
     border-radius: 10px;
   `;
 
-
  return (
    <div>
 		<motion.div initial="hidden" animate={controls} variants={{}}>
-			{Array.from({ length: props.location.state.length }).map((_, i) => (
+			{Array.from({ length: numItems }).map((_, i) => (
 			<GridItem
 				key={i}
 				i={i}
