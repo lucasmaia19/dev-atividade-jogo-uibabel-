@@ -17,7 +17,7 @@ import MenuBar from '../menu-bar/menu-bar';
 import ListagemAnimatiom from '../listagem-animation/listagem-animation';
 import { If } from 'react-if';
 
-const AtividadeCaixaResposta = {
+const AtividadeCaixaResposta = { 
 
     id: '',
 	respostaTxt: '',

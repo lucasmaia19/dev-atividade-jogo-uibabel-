@@ -47,7 +47,7 @@ export default class PesquisarImagemService {
     }
 
     // GetAllAtivida() {
-    //     const url = "http://localhost:8080/atividade_caixa"
+    //     const url = "http://localhost:8080/atividade-caixa"
 
     //     return axios.get(url)
     //         .then((response => {

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, Component } from 'react';
 import axios from 'axios';
 
 import { InputText } from 'primereact/inputtext';
@@ -22,57 +22,43 @@ import MenuBar from '../menu-bar/menu-bar';
 import { If } from 'react-if';
 
 
-  const AtividadeJogo = () => {
+// const AtividadeJogo = () => {
+export default class AtividadeJogo extends Component {
 
-	const history = useHistory();
+	//  history = useHistory();
 
-	// export default function  AtividadeJogo() {
+	 constructor(props) {
+        super(props);
+        this.state = {
+            displayBasic: false,
+            position: 'center',
+			nome: "",
+			products: [],
 
-	const [displayBasic, setDisplayBasic] = useState(false);
-	const [displayBasic2, setDisplayBasic2] = useState(false);
-	const [displayBasic3, setDisplayBasic3] = useState(false);
-	const [displayBasic4, setDisplayBasic4] = useState(false);
+			atividadeAPI: [],
+			atividade: [],
+			respostaACorreta: [],
 
-	const [position, setPosition] = useState('center');
-	const [position2, setPosition2] = useState('center');
-	const [position3, setPosition3] = useState('center');
-	const [position4, setPosition4] = useState('center');
+			requestProgress: false,
+			progressSpinner: false
+        };
 
-	const [nome, setNome] = useState("");
-	const [nome2, setNome2] = useState("");
-	const [nome3, setNome3] = useState("");
-	const [nome4, setNome4] = useState("");
+        this.onClick = this.onClick.bind(this);
+        this.onHide = this.onHide.bind(this);
+    }
 
-	const [products, setProducts] = useState([]);
-	const [products2, setProducts2] = useState([]);
-	const [products3, setProducts3] = useState([]);
-	const [products4, setProducts4] = useState([]);
-
-	const [atividadeAPI, setAtividadeAPI] = useState(null);
-
-	const [respostaACorreta, setRespostaACorreta] = useState(false);
-	const [respostaBCorreta, setRespostaBCorreta] = useState(false);
-	const [respostaCCorreta, setRespostaCCorreta] = useState(false);
-
-	const [requestProgress, setRequestProgress] = useState(false);
-	const [progressSpinner, setProgressSpinner] = useState(false);
+	 toast = useRef(null);
 	
-	const toast = useRef(null);
+	 dataService = new PesquisarImagemService();
 	
-	const dataService = new PesquisarImagemService();
-
-	const [atividade, setAtividade] = useState({
-		perguntaTitulo: 'QUAL A PRIMEIRA LETRA?',
-	})
-	
-	useEffect(() => {
+	componentDidMount() {
 		getTodasAtividades();
 
-	}, []);
+	}
 
-	function getTodasAtividades() {
+	 getTodasAtividades() {
 		setRequestProgress(true)
-		axios.get('http://localhost:8001/atividade_caixa').then(response => {
+		axios.get('http://localhost:8001/atividade-caixa').then(response => {
 			console.log('response', response.data);
 			setAtividadeAPI(response.data)
 			console.log("atividadeAPI", atividadeAPI);
@@ -85,13 +71,13 @@ import { If } from 'react-if';
 		})
 	}
 
-	function onChange(evento) {
+	 onChange(evento) {
 		const { name, value } = evento.target;	
 		setAtividade({ ...atividade, [name]: value })
-	
+
 	}
 
-	function onSubmit(evento) {
+	 onSubmit(evento) {
 		setProgressSpinner(true)
 		evento.preventDefault();
 
@@ -111,7 +97,7 @@ import { If } from 'react-if';
 			console.log(pair[0] + ', ' + pair[1]);
 		}
 
-		axios.post('http://localhost:8001/atividade_caixa', formData).then(snapshot => {
+		axios.post('http://localhost:8001/atividade-caixa', formData).then(snapshot => {
 			toast.current.show({severity:'success', summary: 'Cadastro Completo', life: 3000});
 			console.log('Cadastrado com sucesso')
 			setProgressSpinner(false)
@@ -124,10 +110,10 @@ import { If } from 'react-if';
 		
 	}
 
-	function deleteOneAtividade(id) {
-	console.warn("deleteOneAtividade", id)
+	deleteOneAtividade(id) {
+		console.warn("deleteOneAtividade", id)
 
-		axios.delete(`http://localhost:8001/atividade_caixa/${id}`).then(response => {
+		axios.delete(`http://localhost:8001/atividade-caixa/${id}`).then(response => {
 		toast.current.show({severity:'success', summary:' Deletado com Sucesso',
 			detail:'Id: ' + id , life: 3000});
 			console.log("Cadastro com o id", id, "excluido")
@@ -135,179 +121,181 @@ import { If } from 'react-if';
 		});
 	}
 
-	const onClick = (name, position) => {
-		dialogFuncMap[`${name}`](true);
+    onClick(name, position) {
+        let state = {
+            [`${name}`]: true
+        };
 
-		if (position) {
-			setPosition(position);
-		}
-	}
+        if (position) {
+            state = {
+                ...state,
+                position
+            }
+        }
 
-	const onClick2 = (name2, position2) => {
-		dialogFuncMap2[`${name2}`](true);
+        this.setState(state);
+    }
 
-		if (position2) {
-			setPosition2(position2);
-		}
-	}
+	//  onClick2 = (name2, position2) => {
+	// 	dialogFuncMap2[`${name2}`](true);
 
-	const onClick3 = (name3, position3) => {
-		dialogFuncMap3[`${name3}`](true);
+	// 	if (position2) {
+	// 		setPosition2(position2);
+	// 	}
+	// }
 
-		if (position3) {
-			setPosition3(position3);
-		}
-	}
+	//  onClick3 = (name3, position3) => {
+	// 	dialogFuncMap3[`${name3}`](true);
 
-	const onClick4 = (name4, position4) => {
-		dialogFuncMap4[`${name4}`](true);
+	// 	if (position3) {
+	// 		setPosition3(position3);
+	// 	}
+	// }
 
-		if (position4) {
-			setPosition4(position4);
-		}
-	}
+	//  onClick4 = (name4, position4) => {
+	// 	dialogFuncMap4[`${name4}`](true);
 
-	const dialogFuncMap = {
-		'displayBasic': setDisplayBasic,
+	// 	if (position4) {
+	// 		setPosition4(position4);
+	// 	}
+	// }
 
-	}
+	//  dialogFuncMap2 = {
+	// 	'displayBasic2': setDisplayBasic2,
+	// }
 
-	const dialogFuncMap2 = {
-		'displayBasic2': setDisplayBasic2,
-	}
+	//  dialogFuncMap3 = {
+	// 	'displayBasic3': setDisplayBasic3,
 
-	const dialogFuncMap3 = {
-		'displayBasic3': setDisplayBasic3,
+	// }
 
-	}
+	//  dialogFuncMap4 = {
+	// 	'displayBasic4': setDisplayBasic4,
 
-	const dialogFuncMap4 = {
-		'displayBasic4': setDisplayBasic4,
+	// }
 
-	}
-
-	const onHide = (name) => {
+	 onHide (name) {
 		dialogFuncMap[`${name}`](false);
 	}
 
-	const onHide2 = (name2) => {
-		dialogFuncMap2[`${name2}`](false);
-	}
+	//  onHide2 = (name2) => {
+	// 	dialogFuncMap2[`${name2}`](false);
+	// }
 
-	const onHide3 = (name3) => {
-		dialogFuncMap3[`${name3}`](false);
-	}
+	//  onHide3 = (name3) => {
+	// 	dialogFuncMap3[`${name3}`](false);
+	// }
 
-	const onHide4 = (name4) => {
-		dialogFuncMap4[`${name4}`](false);
-	}
+	//  onHide4 = (name4) => {
+	// 	dialogFuncMap4[`${name4}`](false);
+	// }
 
-	const renderFooter = (name) => {
+	 renderFooter (name) {
 		return (
 			<div>
-				<Button label="No" icon="pi pi-times" onClick={() => onHide(name)} className="p-button-text" />
-				<Button label="Yes" icon="pi pi-check" onClick={() => onHide(name)} autoFocus />
+				<Button label="No" icon="pi pi-times" onClick={() => this.onHide(name)} className="p-button-text" />
+				<Button label="Yes" icon="pi pi-check" onClick={() => this.onHide(name)} autoFocus />
 			</div>
 		);
 	}
 
-	const renderFooter2 = (name2) => {
-		return (
-			<div>
-				<Button label="No" icon="pi pi-times" onClick={() => onHide2(name2)} className="p-button-text" />
-				<Button label="Yes" icon="pi pi-check" onClick={() => onHide2(name2)} autoFocus />
-			</div>
-		);
-	}
+	//  renderFooter2 = (name2) => {
+	// 	return (
+	// 		<div>
+	// 			<Button label="No" icon="pi pi-times" onClick={() => onHide2(name2)} className="p-button-text" />
+	// 			<Button label="Yes" icon="pi pi-check" onClick={() => onHide2(name2)} autoFocus />
+	// 		</div>
+	// 	);
+	// }
 
-	const renderFooter3 = (name3) => {
-		return (
-			<div>
-				<Button label="No" icon="pi pi-times" onClick={() => onHide3(name3)} className="p-button-text" />
-				<Button label="Yes" icon="pi pi-check" onClick={() => onHide3(name3)} autoFocus />
-			</div>
-		);
-	}
+	//  renderFooter3 = (name3) => {
+	// 	return (
+	// 		<div>
+	// 			<Button label="No" icon="pi pi-times" onClick={() => onHide3(name3)} className="p-button-text" />
+	// 			<Button label="Yes" icon="pi pi-check" onClick={() => onHide3(name3)} autoFocus />
+	// 		</div>
+	// 	);
+	// }
 
-	const renderFooter4 = (name4) => {
-		return (
-			<div>
-				<Button label="No" icon="pi pi-times" onClick={() => onHide4(name4)} className="p-button-text" />
-				<Button label="Yes" icon="pi pi-check" onClick={() => onHide4(name4)} autoFocus />
-			</div>
-		);
-	}
+	//  renderFooter4 = (name4) => {
+	// 	return (
+	// 		<div>
+	// 			<Button label="No" icon="pi pi-times" onClick={() => onHide4(name4)} className="p-button-text" />
+	// 			<Button label="Yes" icon="pi pi-check" onClick={() => onHide4(name4)} autoFocus />
+	// 		</div>
+	// 	);
+	// }
 
-	const onFormSubmit = (e) => {
+	 onFormSubmit = (e) => {
 		e.preventDefault()
-		dataService.getData(nome).then(data => setProducts(data))
+		this.dataService.getData(nome).then(data => setProducts(data))
 		// dataService.getData(nome).then(data => setAtividade(data))
 
 	}
 
-	const onFormSubmit2 = (e) => {
-		e.preventDefault()
-		dataService.getData2(nome2).then(data => setProducts2(data))
-		// dataService.getData(nome).then(data => setAtividade(data))
+	//  onFormSubmit2 = (e) => {
+	// 	e.preventDefault()
+	// 	dataService.getData2(nome2).then(data => setProducts2(data))
+	// 	// dataService.getData(nome).then(data => setAtividade(data))
 
-	}
+	// }
 
-	const onFormSubmit3 = (e) => {
-		e.preventDefault()
-		dataService.getData3(nome3).then(data => setProducts3(data))
+	//  onFormSubmit3 = (e) => {
+	// 	e.preventDefault()
+	// 	dataService.getData3(nome3).then(data => setProducts3(data))
 
-	}
+	// }
 
-	const onFormSubmit4 = (e) => {
-		e.preventDefault()
-		dataService.getData4(nome4).then(data => setProducts4(data))
+	//  onFormSubmit4 = (e) => {
+	// 	e.preventDefault()
+	// 	dataService.getData4(nome4).then(data => setProducts4(data))
 
-	}
+	// }
 
-	const imageBodyTemplate = (rowData) => {
+	 imageBodyTemplate (rowData) {
 		return <img src={rowData.contentUrl} className="data-image" />
 	}
 
-	const imageBodyTemplate2 = (rowData2) => {
-		return <img src={rowData2.contentUrl} className="data-image" />
-	}
+	//  imageBodyTemplate2 = (rowData2) => {
+	// 	return <img src={rowData2.contentUrl} className="data-image" />
+	// }
 
-	const imageBodyTemplate3 = (rowData3) => {
-		return <img src={rowData3.contentUrl} className="data-image" />
-	}
+	//  imageBodyTemplate3 = (rowData3) => {
+	// 	return <img src={rowData3.contentUrl} className="data-image" />
+	// }
 
-	const imageBodyTemplate4 = (rowData4) => {
-		return <img src={rowData4.contentUrl} className="data-image" />
-	}
+	//  imageBodyTemplate4 = (rowData4) => {
+	// 	return <img src={rowData4.contentUrl} className="data-image" />
+	// }
 
-	const buttonSelecionarImage = (rowData) => {
-		return <Button className="button-selecionar-imagem" label="Selecionar" onClick={ () => selecionarImagem(rowData.contentUrl)}/>
-
-	}
-
-	const buttonSelecionarImage2 = (rowData2) => {
-		return <Button className="button-selecionar-imagem" label="Selecionar" onClick={ () => selecionarRespostaAUrl(rowData2.contentUrl)}/>
+	 buttonSelecionarImage (rowData) {
+		return <Button className="button-selecionar-imagem" label="Selecionar" onClick={ () => this.selecionarImagem(rowData.contentUrl)}/>
 
 	}
 
-	const buttonSelecionarImage3 = (rowData3) => {
-		return <Button className="button-selecionar-imagem" label="Selecionar" onClick={ () => selecionarRespostaBUrl(rowData3.contentUrl)}/>
+	//  buttonSelecionarImage2 = (rowData2) => {
+	// 	return <Button className="button-selecionar-imagem" label="Selecionar" onClick={ () => selecionarRespostaAUrl(rowData2.contentUrl)}/>
 
-	}
+	// }
 
-	const buttonSelecionarImage4 = (rowData4) => {
-		return <Button className="button-selecionar-imagem" label="Selecionar" onClick={ () => selecionarRespostaCUrl(rowData4.contentUrl)}/>
+	//  buttonSelecionarImage3 = (rowData3) => {
+	// 	return <Button className="button-selecionar-imagem" label="Selecionar" onClick={ () => selecionarRespostaBUrl(rowData3.contentUrl)}/>
 
-	}
+	// }
 
-	const buttonSelecionarAtividade = (atividadeAPI) => {
+	//  buttonSelecionarImage4 = (rowData4) => {
+	// 	return <Button className="button-selecionar-imagem" label="Selecionar" onClick={ () => selecionarRespostaCUrl(rowData4.contentUrl)}/>
+
+	// }
+
+	 buttonSelecionarAtividade (atividadeAPI) {
 
 		const confirm = () => {
 			confirmDialog({
 				message: 'Tem Certeza quer Excluir?',
 				header: 'Atenção',
 				icon: 'pi pi-exclamation-triangle',
-				accept: () => deleteOneAtividade(atividadeAPI.id),
+				accept: () => this.deleteOneAtividade(atividadeAPI.id),
 				// reject: () => rejectFunc()
 			});
 		}
@@ -315,28 +303,28 @@ import { If } from 'react-if';
 		return (
 			<div className="buttons-data">
 				<Button className="button-excluir" icon="pi pi-trash" onClick={confirm}/>
-				<Button className="button-editar" icon="pi pi-file" onClick={ () => getOneAtividade(atividadeAPI)}/>
+				<Button className="button-editar" icon="pi pi-file" onClick={ () => this.getOneAtividade(atividadeAPI)}/>
 				{/* <Button className="button-editar" icon="pi pi-file" onClick={ () => testeAnimation()}/> */}
 			</div>
 			)
 	}
 
-	function testeAnimation() {
+	 testeAnimation() {
 		history.push('teste-animation')
 	}
-	
-	function getOneAtividade(atividadeAPI) {
+
+	 getOneAtividade(atividadeAPI) {
 		history.push('/atividade-montar', atividadeAPI)
 		// history.push(`/atividade-montar/${id}`)
 		// console.log("id", id)
 
 	}
 
-	function listarAtividadesAnimation() {
+	 listarAtividadesAnimation() {
 		history.push('/teste-animation', atividadeAPI)
 	}
 
-	function selecionarImagem(rowData, evento) {
+	 selecionarImagem(rowData, evento) {
 
 		const perguntaUrl = rowData;
 
@@ -345,259 +333,258 @@ import { If } from 'react-if';
 		setAtividade({ ...atividade, perguntaUrl})
 	}
 
-	function selecionarRespostaAUrl(rowData, evento) {
+	//  selecionarRespostaAUrl(rowData, evento) {
 
-		const respostaAUrl = rowData;
+	// 	const respostaAUrl = rowData;
 
-		console.log("respostaAUrl", respostaAUrl)
+	// 	console.log("respostaAUrl", respostaAUrl)
 
-		setAtividade({ ...atividade, respostaAUrl})
-	}
+	// 	setAtividade({ ...atividade, respostaAUrl})
+	// }
 
-	function selecionarRespostaBUrl(rowData, evento) {
+	//  selecionarRespostaBUrl(rowData, evento) {
 
-		const respostaBUrl = rowData;
+	// 	const respostaBUrl = rowData;
 
-		console.log("respostaBUrl", respostaBUrl)
+	// 	console.log("respostaBUrl", respostaBUrl)
 
-		setAtividade({ ...atividade, respostaBUrl})
-	}
+	// 	setAtividade({ ...atividade, respostaBUrl})
+	// }
 
-	function selecionarRespostaCUrl(rowData, evento) {
+	//  selecionarRespostaCUrl(rowData, evento) {
 
-		const respostaCUrl = rowData;
+	// 	const respostaCUrl = rowData;
 
-		console.log("respostaCUrl", respostaCUrl)
+	// 	console.log("respostaCUrl", respostaCUrl)
 
-		setAtividade({ ...atividade, respostaCUrl})
-	}
+	// 	setAtividade({ ...atividade, respostaCUrl})
+	// }
 
-	function clickRadioButtonA(e) {
+	 clickRadioButtonA(e) {
 		console.warn('clickRadioButton()')
 		setRespostaACorreta(true);
 		setRespostaBCorreta(false);
 		setRespostaCCorreta(false);
 	}
 
-	function clickRadioButtonB(e) {
+	 clickRadioButtonB(e) {
 		console.warn('clickRadioButton()')
 		setRespostaACorreta(false);
 		setRespostaBCorreta(true);
 		setRespostaCCorreta(false);
 	}
 
-	function clickRadioButtonC(e) {
+	 clickRadioButtonC(e) {
 		console.warn('clickRadioButton()')
 		setRespostaACorreta(false);
 		setRespostaBCorreta(false);
 		setRespostaCCorreta(true);
 	}
 
-	return (	
-		<div>
-			<MenuBar/>
-			<div className="">
+	render() {
+		return (	
+			<div>
+				<MenuBar/>
+				<div className="">
 
-				<If condition= { requestProgress }>
-					<ProgressBar mode="indeterminate" className="progressBar"/>
-				</If>
+					<If condition= { this.state.requestProgress }>
+						<ProgressBar mode="indeterminate" className="progressBar"/>
+					</If>
 
-				<If condition = { !requestProgress }>
-					<div>
-						<Toast ref={toast} />
+					<If condition = { !this.state.requestProgress }>
+						<div>
+							<Toast ref={this.state.toast} />
 
-						<div className="">
+							<div className="">
 
-							<div className="h-titulos">
-								<h5>Titulo da Atividade</h5>
-							</div>
+								<div className="h-titulos">
+									<h5>Titulo da Atividade</h5>
+								</div>
+									<div className="p-fluid p-formgrid p-grid">
+										<div className="p-field p-col-12 p-sm-12 p-md-6">
+											<InputText className="input-titulo" id="firstname2" type="text" name="perguntaTitulo"
+												value={this.state.atividade.perguntaTitulo} onChange={this.onChange}/>
+										</div>
+									</div>
+
+								<div className="h-titulos">
+									<h5>Pergunta</h5>
+								</div>
 								<div className="p-fluid p-formgrid p-grid">
 									<div className="p-field p-col-12 p-sm-12 p-md-6">
-										<InputText className="input-titulo" id="firstname2" type="text" name="perguntaTitulo"
-											value={atividade.perguntaTitulo} onChange={onChange}/>
+										<Button className="button-pergunta" label="Imagem" icon="pi pi-external-link"
+											onClick={() => onClick('displayBasic')} />
+									</div>
+									<div className="p-field p-col-12 p-sm-12 p-md-6">
+										<InputText className="input-pergunta" type="text" rows="4" 
+											name="perguntaTxt" value={atividade.perguntaTxt} onChange={onChange}>
+										</InputText>
 									</div>
 								</div>
 
-							<div className="h-titulos">
-								<h5>Pergunta</h5>
-							</div>
-							<div className="p-fluid p-formgrid p-grid">
-								<div className="p-field p-col-12 p-sm-12 p-md-6">
-									<Button className="button-pergunta" label="Imagem" icon="pi pi-external-link"
-										onClick={() => onClick('displayBasic')} />
-								</div>
-								<div className="p-field p-col-12 p-sm-12 p-md-6">
-									<InputText className="input-pergunta" type="text" rows="4" 
-										name="perguntaTxt" value={atividade.perguntaTxt} onChange={onChange}>
-									</InputText>
-								</div>
-							</div>
-
-							<Dialog header="Procurar Imagens" visible={displayBasic} style={{ width: '90vw' }}
-								footer={renderFooter('displayBasic')}
-								onHide={() => onHide('displayBasic')}>
-								<InputText value={nome} onChange={(e) => setNome(e.target.value)} />
-								<Button onClick={onFormSubmit} icon="pi pi-search" className="p-ml-2"/>
-								<div className="card">
-									<DataTable value={products.value}>
-										<Column header="Image" body={imageBodyTemplate}></Column>
-										<Column header="Selecionar" body={buttonSelecionarImage}></Column>
-									</DataTable>
-								</div>
-							</Dialog>
-
-							<div className="h-titulo-respostas">
-								<h5>Respostas</h5>
-							</div>
-							<div className="p-fluid p-formgrid p-grid">
-								<If condition = { respostaACorreta }>
-									<div className="p-field p-col-2 p-sm-2 p-md-1">
-									<Button icon="pi pi-check" className="" 
-										style={{width: '100%', height: '100%'}}  name="respostaCorreta"
-										onClick={() => {clickRadioButtonA()}}/>
+								<Dialog header="Procurar Imagens" visible={displayBasic} style={{ width: '90vw' }}
+									footer={renderFooter('displayBasic')}
+									onHide={() => onHide('displayBasic')}>
+									<InputText value={nome} onChange={(e) => setNome(e.target.value)} />
+									<Button onClick={onFormSubmit} icon="pi pi-search" className="p-ml-2"/>
+									<div className="card">
+										<DataTable value={products.value}>
+											<Column header="Image" body={imageBodyTemplate}></Column>
+											<Column header="Selecionar" body={buttonSelecionarImage}></Column>
+										</DataTable>
 									</div>
-								</If>
+								</Dialog>
 
-								<If condition= { !respostaACorreta }>
-									<div className="p-field p-col-2 p-sm-2 p-md-1">
-									<Button icon="pi pi-times" className=""
-										style={{width: '100%', height: '100%'}} name="respostaCorreta"
-										onClick={() => {clickRadioButtonA()}}/>
-									</div>
-								</If>
-
-								<div className="p-field p-col-2 p-sm-2 p-md-1">
-									<Button className="button-dialog" style={{width: '100%', height: '100%'}} 
-										label="A" onClick={() => onClick2('displayBasic2')} />
+								<div className="h-titulo-respostas">
+									<h5>Respostas</h5>
 								</div>
-								<div className="p-field p-col-8 p-sm-8 p-md-4">
-								<InputText className="input-resposta" type="text" name="respostaATxt"
-									value={atividade.respostaATxt} onChange={onChange}/>
-								</div>
-							</div>
-
-							<Dialog header="Procurar Imagens" visible={displayBasic2} style={{ width: '90vw' }}
-								footer={renderFooter2('displayBasic2')}
-								onHide={() => onHide2('displayBasic2')}>
-								<InputText value={nome2} onChange={(e) => setNome2(e.target.value)} />
-								<Button onClick={onFormSubmit2} icon="pi pi-search" className="p-ml-2"/>
-								<div className="card">
-									<DataTable value={products2.value}>
-										<Column header="Image" body={imageBodyTemplate2}></Column>
-										<Column header="Selecionar" body={buttonSelecionarImage2}></Column>
-									</DataTable>
-								</div>  
-							</Dialog>
-
-							<div className="p-fluid p-formgrid p-grid">
-									<If condition = { respostaBCorreta }>
-										<div className="p-field p-col-2 p-sm-3 p-md-1">
-											<Button icon="pi pi-check" className="" 
-												style={{width: '100%', height: '100%'}}  name="respostaCorreta"
-												onClick={() => {clickRadioButtonB()}}/>
+								<div className="p-fluid p-formgrid p-grid">
+									<If condition = { respostaACorreta }>
+										<div className="p-field p-col-2 p-sm-2 p-md-1">
+										<Button icon="pi pi-check" className="" 
+											style={{width: '100%', height: '100%'}}  name="respostaCorreta"
+											onClick={() => {clickRadioButtonA()}}/>
 										</div>
 									</If>
 
-									<If condition= { !respostaBCorreta }>
-										<div className="p-field p-col-2 p-sm-3 p-md-1">
-											<Button icon="pi pi-times" className=""
-												style={{width: '100%', height: '100%'}} name="respostaCorreta"
-												onClick={() => {clickRadioButtonB()}}/>
+									<If condition= { !respostaACorreta }>
+										<div className="p-field p-col-2 p-sm-2 p-md-1">
+										<Button icon="pi pi-times" className=""
+											style={{width: '100%', height: '100%'}} name="respostaCorreta"
+											onClick={() => {clickRadioButtonA()}}/>
 										</div>
 									</If>
 
 									<div className="p-field p-col-2 p-sm-2 p-md-1">
 										<Button className="button-dialog" style={{width: '100%', height: '100%'}} 
-											label="B" onClick={() => onClick3('displayBasic3')} />
+											label="A" onClick={() => onClick2('displayBasic2')} />
 									</div>
 									<div className="p-field p-col-8 p-sm-8 p-md-4">
-										<InputText className="input-resposta" type="text" name="respostaBTxt"
-											value={atividade.respostaBTxt} onChange={onChange}/>
+									<InputText className="input-resposta" type="text" name="respostaATxt"
+										value={atividade.respostaATxt} onChange={onChange}/>
 									</div>
 								</div>
 
-							<Dialog header="Procurar Imagens" visible={displayBasic3} style={{ width: '90vw' }}
-								footer={renderFooter3('displayBasic3')}
-								onHide={() => onHide3('displayBasic3')}>
-								<InputText value={nome3} onChange={(e) => setNome3(e.target.value)} />
-								<Button onClick={onFormSubmit3} icon="pi pi-search" className="p-ml-2"/>
-								<div className="card">
-									<DataTable value={products3.value}>
-										{/* <Column header="URL" field="contentUrl"></Column> */}
-										<Column header="Image" body={imageBodyTemplate3}></Column>
-										<Column header="Selecionar" body={buttonSelecionarImage3}></Column>
-									</DataTable>
-								</div>  
-							</Dialog>
+								{/* <Dialog header="Procurar Imagens" visible={displayBasic2} style={{ width: '90vw' }}
+									footer={renderFooter2('displayBasic2')}
+									onHide={() => onHide2('displayBasic2')}>
+									<InputText value={nome2} onChange={(e) => setNome2(e.target.value)} />
+									<Button onClick={onFormSubmit2} icon="pi pi-search" className="p-ml-2"/>
+									<div className="card">
+										<DataTable value={products2.value}>
+											<Column header="Image" body={imageBodyTemplate2}></Column>
+											<Column header="Selecionar" body={buttonSelecionarImage2}></Column>
+										</DataTable>
+									</div>  
+								</Dialog> */}
 
-							<div className="p-fluid p-formgrid p-grid">
-								<If condition = { respostaCCorreta }>
-									<div className="p-field p-col-2 p-sm-3 p-md-1">
-										<Button icon="pi pi-check" className="" 
-											style={{width: '100%', height: '100%'}}  name="respostaCorreta"
-											onClick={() => {clickRadioButtonC()}}/>
+								<div className="p-fluid p-formgrid p-grid">
+										<If condition = { respostaBCorreta }>
+											<div className="p-field p-col-2 p-sm-3 p-md-1">
+												<Button icon="pi pi-check" className="" 
+													style={{width: '100%', height: '100%'}}  name="respostaCorreta"
+													onClick={() => {clickRadioButtonB()}}/>
+											</div>
+										</If>
+
+										<If condition= { !respostaBCorreta }>
+											<div className="p-field p-col-2 p-sm-3 p-md-1">
+												<Button icon="pi pi-times" className=""
+													style={{width: '100%', height: '100%'}} name="respostaCorreta"
+													onClick={() => {clickRadioButtonB()}}/>
+											</div>
+										</If>
+
+										<div className="p-field p-col-2 p-sm-2 p-md-1">
+											<Button className="button-dialog" style={{width: '100%', height: '100%'}} 
+												label="B" onClick={() => onClick3('displayBasic3')} />
+										</div>
+										<div className="p-field p-col-8 p-sm-8 p-md-4">
+											<InputText className="input-resposta" type="text" name="respostaBTxt"
+												value={atividade.respostaBTxt} onChange={onChange}/>
+										</div>
 									</div>
+{/* 
+								<Dialog header="Procurar Imagens" visible={displayBasic3} style={{ width: '90vw' }}
+									footer={renderFooter3('displayBasic3')}
+									onHide={() => onHide3('displayBasic3')}>
+									<InputText value={nome3} onChange={(e) => setNome3(e.target.value)} />
+									<Button onClick={onFormSubmit3} icon="pi pi-search" className="p-ml-2"/>
+									<div className="card">
+										<DataTable value={products3.value}>
+											<Column header="Image" body={imageBodyTemplate3}></Column>
+											<Column header="Selecionar" body={buttonSelecionarImage3}></Column>
+										</DataTable>
+									</div>  
+								</Dialog>  */}
+
+								<div className="p-fluid p-formgrid p-grid">
+									<If condition = { respostaCCorreta }>
+										<div className="p-field p-col-2 p-sm-3 p-md-1">
+											<Button icon="pi pi-check" className="" 
+												style={{width: '100%', height: '100%'}}  name="respostaCorreta"
+												onClick={() => {clickRadioButtonC()}}/>
+										</div>
+									</If>
+
+									<If condition= { !respostaCCorreta }>
+										<div className="p-field p-col-2 p-sm-3 p-md-1">
+											<Button icon="pi pi-times" className=""
+												style={{width: '100%', height: '100%'}} name="respostaCorreta"
+												onClick={() => {clickRadioButtonC()}}/>
+										</div>
+									</If>
+
+									<div className="p-field p-col-2 p-sm-2 p-md-1">
+										<Button className="button-dialog" style={{width: '100%', height: '100%'}} 
+											label="C" onClick={() => onClick4('displayBasic4')} />
+									</div>
+									<div className="p-field p-col-8 p-sm-8 p-md-4">
+										<InputText className="input-resposta" type="text" name="respostaCTxt"
+											value={atividade.respostaCTxt} onChange={onChange}/>
+									</div>
+								</div>
+
+								{/* <Dialog header="Procurar Imagens" visible={displayBasic4} style={{ width: '90vw' }} 
+									footer={renderFooter4('displayBasic4')}
+									onHide={() => onHide4('displayBasic4')}>
+									<InputText value={nome4} onChange={(e) => setNome4(e.target.value)} />
+									<Button onClick={onFormSubmit4} icon="pi pi-search" className="p-ml-2"/>
+									<div className="card">
+										<DataTable value={products4.value}>
+											<Column header="Image" body={imageBodyTemplate4}></Column>
+											<Column header="Selecionar" body={buttonSelecionarImage4}></Column>
+										</DataTable>
+									</div>  
+								</Dialog> */}
+
+								<form onSubmit={this.onSubmit}> 
+									<div className="p-fluid">
+										<div className="p-field p-col-12 p-sm-12 p-md-6">
+											<Button className="button-salvar" type="submit" label="Salvar" onSubmit={this.onSubmit}/>
+										</div>
+									</div>
+								</form>
+
+								<If condition={ this.state.progressSpinner }>
+									<ProgressSpinner style={{width: '50px', height: '50px'}} strokeWidth="8" fill="#EEEEEE" 
+										animationDuration=".5s"/>
 								</If>
 
-								<If condition= { !respostaCCorreta }>
-									<div className="p-field p-col-2 p-sm-3 p-md-1">
-										<Button icon="pi pi-times" className=""
-											style={{width: '100%', height: '100%'}} name="respostaCorreta"
-											onClick={() => {clickRadioButtonC()}}/>
-									</div>
-								</If>
-
-								<div className="p-field p-col-2 p-sm-2 p-md-1">
-									<Button className="button-dialog" style={{width: '100%', height: '100%'}} 
-										label="C" onClick={() => onClick4('displayBasic4')} />
-								</div>
-								<div className="p-field p-col-8 p-sm-8 p-md-4">
-									<InputText className="input-resposta" type="text" name="respostaCTxt"
-										value={atividade.respostaCTxt} onChange={onChange}/>
-								</div>
 							</div>
 
-							<Dialog header="Procurar Imagens" visible={displayBasic4} style={{ width: '90vw' }} 
-								footer={renderFooter4('displayBasic4')}
-								onHide={() => onHide4('displayBasic4')}>
-								<InputText value={nome4} onChange={(e) => setNome4(e.target.value)} />
-								<Button onClick={onFormSubmit4} icon="pi pi-search" className="p-ml-2"/>
-								<div className="card">
-									<DataTable value={products4.value}>
-										<Column header="Image" body={imageBodyTemplate4}></Column>
-										<Column header="Selecionar" body={buttonSelecionarImage4}></Column>
-									</DataTable>
-								</div>  
-							</Dialog>
-
-							<form onSubmit={onSubmit}> 
-								<div className="p-fluid">
-									<div className="p-field p-col-12 p-sm-12 p-md-6">
-										<Button className="button-salvar" type="submit" label="Salvar" onSubmit={onSubmit}/>
-									</div>
-								</div>
-							</form>
-
-							<If condition={ progressSpinner }>
-								<ProgressSpinner style={{width: '50px', height: '50px'}} strokeWidth="8" fill="#EEEEEE" 
-									animationDuration=".5s"/>
-							</If>
-
+							<div className="data">
+								<DataTable value={this.state.atividadeAPI}>
+									<Column field="perguntaTxt" header="Titulo"></Column>
+									<Column  field="name" header="#" body={this.buttonSelecionarAtividade}></Column>
+								</DataTable>
+								{/* <Button className="button-salvar" type="submit" label="Salvar" onClick={onSubmit}/> */}
+								<Button className="button-salvar" type="submit" label="Começar" onClick={this.listarAtividadesAnimation}></Button>
+							</div>
 						</div>
-
-						<div className="data">
-							<DataTable value={atividadeAPI}>
-								<Column field="perguntaTxt" header="Titulo"></Column>
-								<Column  field="name" header="#" body={buttonSelecionarAtividade}></Column>
-							</DataTable>
-							{/* <Button className="button-salvar" type="submit" label="Salvar" onClick={onSubmit}/> */}
-							<Button className="button-salvar" type="submit" label="Começar" onClick={listarAtividadesAnimation}></Button>
-						</div>
-					</div>
-				</If>
+					</If>
+				</div>
 			</div>
-		</div>
-	);
+		);
+	}
 }
-
-export default (AtividadeJogo);

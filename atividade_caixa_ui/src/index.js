@@ -2,25 +2,40 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import App from "./App";
+import 'regenerator-runtime/runtime'
+
 import "./index.css";
-import AtividadeJogo from './atividade-jogo/atividade-jogo';
-import AtividadeMontar from './atividade-montar/atividade-montar';
+import App from "./App";
 import MenuBar from "./menu-bar/menu-bar";
+import AtividadeMontar from './atividade-montar/atividade-montar';
+import AtividadeJogo from './atividade-jogo/atividade-jogo';
 import ListagemAnimation from "./listagem-animation/listagem-animation";
 
-import 'regenerator-runtime/runtime'
+import ExampleCountFunction from "./example/example-count-function";
+import ExampleCountClass from "./example/example-count-class";
+import ExampleHttpFunction from "./example/example-http-function";
+import ExampleHttpClass from "./example/example-http-class";
+
 
 ReactDOM.render(
 	<React.StrictMode>
-		<BrowserRouter>
+		<BrowserRouter> 
 			<Switch>
-				<Route exact path="/appJs" component={App} />
-				<Route exact path="/teste-animation" component={ListagemAnimation}/>
 				<Route exact path="/" component={AtividadeJogo} />
+				<Route exact path="/appJs" component={App} />
+				<Route exact path="/menuBar" component={MenuBar}/>
+
+				<Route exact path="/example-count-function" component={ExampleCountFunction}/>
+				<Route exact path="/example-count-class" component={ExampleCountClass}/>
+
+				<Route exact path="/example-http-function" component={ExampleHttpFunction}/>
+				<Route exact path="/example-http-class" component={ExampleHttpClass}/>
+
+				<Route exact path="/teste-animation" component={ListagemAnimation}/>
+				<Route exact path="/listagem-animation" component={ListagemAnimation}/>
+
 				<Route exact path="/atividade-montar" component={AtividadeMontar}/>
 				<Route exact path="/atividade-montar/:id" component={AtividadeMontar}/>
-				<Route exact path="/menuBar" component={MenuBar}/>
 			</Switch>
 		</BrowserRouter>,
 	</React.StrictMode>,

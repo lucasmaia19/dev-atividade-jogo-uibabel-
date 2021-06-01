@@ -1,23 +1,68 @@
 import React, { useRef, useLayoutEffect, useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+
 import { motion, useAnimation } from "framer-motion";
 import styled from "styled-components";
-import "../styles3.css";
 import axios from 'axios';
 
-export default function ListagemAnimation({props, delayPerPixel = 0.0008, numItems = 5}) {
+import "../styles3.css"; 
 
-	useEffect(() => {
-		controls.start("visible");
-		axios.get('http://localhost:8001/atividade_caixa').then(response => {
-			setAtividade(response.data)
-			console.log("response", response.data)
-		})
-		// console.log("props", props.location.state)
-	}, []);
+// export default function ListagemAnimation({props, delayPerPixel = 0.0008, numItems = 5}) {
+const ListagemAnimation = () => {
 
 	const [atividade, setAtividade] = useState([])
 
+	let [atividade5, setAtividade5] = useState({id: '1', perguntaTitulo: 'Corrida'})
+	const atividadeDummy = {id: '2', perguntaTitulo: 'Corrida Alterado'}
+
+	const [count, setCount] = useState(0);
+
+	const atividadeList = [
+
+		// axios.get('http://localhost:8001/atividade-caixa').then(response => {
+
+		// 	setAtividade(response.data)
+			
+		// }),
+		
+		{id: '10', perguntaTitulo: 'Labirinto'},
+		{id: '20', perguntaTitulo: 'Cruzadinha'}
+		
+	]
+	
+	
+	useEffect(() => {
+		// console.log("atividade", atividade)
+
+		// controls.start("visible");
+		setCount(count + 1);
+		console.log("count", count);
+
+		// axios.get('http://localhost:8001/atividade-caixa').then(response => {
+			
+			// console.log("response", response.data);
+
+			// setAtividade(response.data);
+			// console.log("atividade", atividade);
+
+			// setAtividade(atividadeList);
+			// console.log("atividadeList", atividadeList);
+
+			// setAtividade5(response.data);
+
+			console.log("atividade5", atividade5);
+			setAtividade5(atividadeDummy);
+			console.log("atividade5", atividade5);
+
+			setCount(count + 1);
+			console.log("count", count);
+
+			// setAtividade(response.data)
+			
+		// })
+	}, []);
+
+	/*
 	function converteImagemBase64ParaHtml(imagem) {
 
 		let novaImagem;
@@ -56,12 +101,15 @@ export default function ListagemAnimation({props, delayPerPixel = 0.0008, numIte
 			delayRef.current = d * delayPerPixel;
 		}, [delayPerPixel]);
 
-			return <Box ref={ref} variants={itemVariants} custom={delayRef} 
-		      whileHover={{ scale: 1.1 }}
-			  whileTap={{ scale: 1.0 }}>
-				{/* <img className=""
-					src={`${converteImagemBase64ParaHtml(props.location.state.perguntaImg)}`}
-					style={{width: 100, height: 100}}/> */}
+		// <img className=""
+		// src={`${converteImagemBase64ParaHtml(props.location.state.perguntaImg)}`}
+		// style={{width: 100, height: 100}}/>
+
+		return 
+			<Box ref={ref} variants={itemVariants} custom={delayRef} 
+				whileHover={{ scale: 1.1 }}
+				whileTap={{ scale: 1.0 }}>
+				{}
 			</Box>;
   	}
 
@@ -71,10 +119,10 @@ export default function ListagemAnimation({props, delayPerPixel = 0.0008, numIte
 		scale: 1.5
 	},
 	visible: delayRef => ({
-		opacity: 1,
-		scale: 1,
-		transition: { delay: delayRef.current }
-	})
+			opacity: 1,
+			scale: 1,
+			transition: { delay: delayRef.current }
+		})
 	};
 
 	const Box = styled(motion.div)`
@@ -86,26 +134,40 @@ export default function ListagemAnimation({props, delayPerPixel = 0.0008, numIte
 		border-radius: 10px;
 	`;
 
- return (
-	<div>
-		<motion.div initial="hidden" animate={controls} variants={{}}>
-			{Array.from({ length: 2 }).map((_, i) => (
-			<GridItem
-				key={i}
-				i={i}
-				originIndex={26}
-				delayPerPixel={delayPerPixel}
-				originOffset={originOffset}
+	return (
+		<div>
+			<motion.div initial="hidden" animate={controls} variants={{}}>
+				{Array.from({ length: 2 }).map((_, i) => (
+					<GridItem
+						key={i}
+						i={i}
+						originIndex={26}
+						delayPerPixel={delayPerPixel}
+						originOffset={originOffset}
 
-				layout
-				data-isOpen={isOpen}
-				initial={{ borderRadius: 50 }}
-				className="parent"
-				onClick={() => setIsOpen(!isOpen)}
-			/>
-			))}
-			<motion.div layout className="child" />
-		</motion.div>
-	</div>
- );
+						layout
+						data-isOpen={isOpen}
+						initial={{ borderRadius: 50 }}
+						className="parent"
+						onClick={() => setIsOpen(!isOpen)}
+					/>
+				))}
+
+			<motion.div layout className="child" /></motion.div>
+		</div>
+	);
+	*/
+
+	// {stations.map(station => <div key={station}> {station} </div>)}
+	// {atividade.map(e => <div key={e.id}> {e.perguntaTitulo} </div>)}
+	// Olá {atividade}
+	return (
+		<div>
+			{/* {atividadeList.map(e => <div key={e.id}> {e.perguntaTitulo} </div>)} */}
+			{atividadeList.map(e => <div key={e.id}> {e.perguntaTitulo} </div>)}
+			{atividade.perguntaTitulo}
+		</div>
+	);
 }
+
+export default ListagemAnimation;

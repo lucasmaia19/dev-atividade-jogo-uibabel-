@@ -1,10 +1,12 @@
 package com.example.atividade_caixa.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,7 @@ import com.example.atividade_caixa.service.AtividadeCaixaService;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("atividade_caixa")
+@RequestMapping("atividade-caixa")
 //@Slf4j
 public class AtividadeCaixaController {
 
@@ -35,9 +37,19 @@ public class AtividadeCaixaController {
 	@Autowired
 	private AtividadeCaixaService atividadeCaixaService;
 
+	@SuppressWarnings("unlikely-arg-type")
 	@GetMapping
 	public List<AtividadeCaixa> listarAtividadeCaixa() {
+
 		return atividadeCaixaRepository.findAll();
+
+//		List<AtividadeCaixa> atividadeCaixaList = atividadeCaixaRepository.findAll();
+//		return atividadeCaixaList.stream().filter(e -> e.getId().equals(33l)).collect(Collectors.toList());
+		
+//		AtividadeCaixa atividadeCaixa = new AtividadeCaixa();
+//		atividadeCaixa.setId(10L);
+//		atividadeCaixa.setPerguntaTitulo("Pergunta Título hehehe");
+//		return Arrays.asList(atividadeCaixa);
 	}
 
 	@GetMapping("/{id}")
