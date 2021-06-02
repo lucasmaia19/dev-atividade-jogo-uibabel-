@@ -142,7 +142,7 @@ const AtividadeMontar = (props) => {
 
     return (
         <div>
-            {/* <ListagemAnimatiom props={props}/> */}
+            <ListagemAnimatiom props={props}/>
         </div>
 
         // <div>

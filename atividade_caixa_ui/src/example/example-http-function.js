@@ -11,13 +11,13 @@ function ExampleHttpFunction() {
 
     useEffect(() => {
 
-        // let mounted = true;
+        let mounted = true;
 
 		axios.get('http://localhost:8001/atividade-caixa')
             .then(response => response.data)
             .then(data => {
 
-                // if (mounted) {
+                if (mounted) {
 
                     console.log("atividades", atividades);
                     setAtividades(data);
@@ -31,10 +31,10 @@ function ExampleHttpFunction() {
 
                     setCount(count + 1)
                     console.log("count", count);
-                // }
+                }
             })
 
-            // return () => mounted = false;
+            return () => mounted = false;
     }, []);
 
     return (

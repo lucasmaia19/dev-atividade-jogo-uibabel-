@@ -22,6 +22,7 @@ export default class ExampleHttpClass extends Component {
                 console.log("this.state.atividades", this.state.atividades);
                 this.setState({atividades: data});
                 console.log("this.state.atividades", this.state.atividades);
+                console.log("atividades", this.state.atividades.perguntaTitulo);
 
                 this.setState({count: this.state.count + 1})
                 console.log("this.state.count", this.state.count);

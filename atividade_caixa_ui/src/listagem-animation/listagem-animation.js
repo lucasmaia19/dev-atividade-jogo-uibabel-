@@ -4,13 +4,18 @@ import ReactDOM from "react-dom";
 import { motion, useAnimation } from "framer-motion";
 import styled from "styled-components";
 import axios from 'axios';
+import { If } from 'react-if';
 
 import "../styles3.css"; 
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 
-// export default function ListagemAnimation({props, delayPerPixel = 0.0008, numItems = 5}) {
-const ListagemAnimation = () => {
+export default function ListagemAnimation({delayPerPixel = 0.0008, numItems = 5}) {
+// const ListagemAnimation = () => {
 
 	const [atividade, setAtividade] = useState([])
+
+	const [requestProgress, setRequestProgress] = useState(false);
 
 	let [atividade5, setAtividade5] = useState({id: '1', perguntaTitulo: 'Corrida'})
 	const atividadeDummy = {id: '2', perguntaTitulo: 'Corrida Alterado'}
@@ -32,39 +37,36 @@ const ListagemAnimation = () => {
 	
 	
 	useEffect(() => {
-		// console.log("atividade", atividade)
 
-		// controls.start("visible");
-		setCount(count + 1);
-		console.log("count", count);
+		// setCount(count + 1);
+		// console.log("count", count);
+		
+		let mounted = true;
 
-		// axios.get('http://localhost:8001/atividade-caixa').then(response => {
+		setRequestProgress(true);
+		axios.get('http://localhost:8001/atividade-caixa').then(response => {
 			
-			// console.log("response", response.data);
+			if (mounted) {
+				console.log("response", response.data)
+				setAtividade(response.data)
+				// console.log("atividade", atividade)
+				setRequestProgress(false)
+			}
+		})
 
-			// setAtividade(response.data);
-			// console.log("atividade", atividade);
+		return () => mounted = false;
 
-			// setAtividade(atividadeList);
-			// console.log("atividadeList", atividadeList);
 
-			// setAtividade5(response.data);
-
-			console.log("atividade5", atividade5);
-			setAtividade5(atividadeDummy);
-			console.log("atividade5", atividade5);
-
-			setCount(count + 1);
-			console.log("count", count);
-
-			// setAtividade(response.data)
-			
-		// })
 	}, []);
 
-	/*
-	function converteImagemBase64ParaHtml(imagem) {
+	
+	function imageBody(rowData) {
+		return <img src={rowData.perguntaImg} className="data-image" />
+	}
 
+	function converteImagemBase64ParaHtml(imagem) {
+		console.log("converteImagemBase64ParaHtml")
+		console.log("atividade", atividade)
 		let novaImagem;
 		novaImagem = "data:image/jpg;base64," + imagem + "";
 
@@ -101,16 +103,30 @@ const ListagemAnimation = () => {
 			delayRef.current = d * delayPerPixel;
 		}, [delayPerPixel]);
 
-		// <img className=""
-		// src={`${converteImagemBase64ParaHtml(props.location.state.perguntaImg)}`}
-		// style={{width: 100, height: 100}}/>
+		return (
+			<div>
+				<DataTable value={atividade}>
+					{/* <Column body={imageBody(atividade)} header="Imagem"> */}
+					<Column field="perguntaTitulo" header="Imagem">
+					 	<img className=""
+							src={`${converteImagemBase64ParaHtml(atividade.perguntaImg)}`}
+							style={{width: 100, height: 100}}/>						
+					</Column>
+					</DataTable>
+				</div>
 
-		return 
-			<Box ref={ref} variants={itemVariants} custom={delayRef} 
-				whileHover={{ scale: 1.1 }}
-				whileTap={{ scale: 1.0 }}>
-				{}
-			</Box>;
+					// <div value={atividade} header="Imagem">
+					// 	<img className=""
+					// 		src={`${converteImagemBase64ParaHtml(atividade.perguntaImg)}`}
+					// 		style={{width: 100, height: 100}}/>
+					// </div>
+			// </div>
+			//   <Box ref={ref} variants={itemVariants} custom={delayRef} 
+			// 	whileHover={{ scale: 1.1 }}
+			// 	whileTap={{ scale: 1.0 }}>
+			//  </Box>
+
+		)
   	}
 
 	const itemVariants = {
@@ -136,38 +152,39 @@ const ListagemAnimation = () => {
 
 	return (
 		<div>
-			<motion.div initial="hidden" animate={controls} variants={{}}>
-				{Array.from({ length: 2 }).map((_, i) => (
-					<GridItem
-						key={i}
-						i={i}
-						originIndex={26}
-						delayPerPixel={delayPerPixel}
-						originOffset={originOffset}
+			<If condition= { requestProgress }>
+				<div>Carregando...</div>
+			</If>
+			<If condition= { !requestProgress }>
+				<motion.div initial="hidden" animate={controls} variants={{}}>
+					{Array.from({ length: 2 }).map((_, i) => (
+						<GridItem
+							key={i}
+							i={i}
+							originIndex={26}
+							delayPerPixel={delayPerPixel}
+							originOffset={originOffset}
 
-						layout
-						data-isOpen={isOpen}
-						initial={{ borderRadius: 50 }}
-						className="parent"
-						onClick={() => setIsOpen(!isOpen)}
-					/>
-				))}
-
-			<motion.div layout className="child" /></motion.div>
+							layout
+							data-isOpen={isOpen}
+							initial={{ borderRadius: 50 }}
+							className="parent"
+							onClick={() => setIsOpen(!isOpen)}
+						/>
+					))}
+				<motion.div layout className="child" /></motion.div>
+			</If>
 		</div>
 	);
-	*/
 
 	// {stations.map(station => <div key={station}> {station} </div>)}
 	// {atividade.map(e => <div key={e.id}> {e.perguntaTitulo} </div>)}
 	// Olá {atividade}
-	return (
-		<div>
-			{/* {atividadeList.map(e => <div key={e.id}> {e.perguntaTitulo} </div>)} */}
-			{atividadeList.map(e => <div key={e.id}> {e.perguntaTitulo} </div>)}
-			{atividade.perguntaTitulo}
-		</div>
-	);
+	// return (
+	// 	<div>
+	// 		{/* {atividadeList.map(e => <div key={e.id}> {e.perguntaTitulo} </div>)} */}
+	// 		{atividadeList.map(e => <div key={e.id}> {e.perguntaTitulo} </div>)}
+	// 		{atividade.perguntaTitulo}
+	// 	</div>
+	// );
 }
-
-export default ListagemAnimation;

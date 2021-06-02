@@ -31,7 +31,7 @@ ReactDOM.render(
 				<Route exact path="/example-http-function" component={ExampleHttpFunction}/>
 				<Route exact path="/example-http-class" component={ExampleHttpClass}/>
 
-				<Route exact path="/teste-animation" component={ListagemAnimation}/>
+				{/* <Route exact path="/teste-animation" component={ListagemAnimation}/> */}
 				<Route exact path="/listagem-animation" component={ListagemAnimation}/>
 
 				<Route exact path="/atividade-montar" component={AtividadeMontar}/>
